@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>Minitutorial 3</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: rgb(88, 72, 246)
+   }
+
+   pre .number {
+     color: rgb(0, 0, 205);
+   }
+
+   pre .comment {
+     color: rgb(76, 136, 107);
+   }
+
+   pre .keyword {
+     color: rgb(0, 0, 255);
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: rgb(3, 106, 7);
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+
+</head>
+
+<body>
+<h1>Minitutorial 3</h1>
+
+<h2>Checking headings</h2>
+
+<p>Now, I would like to know if all headings or column names for all files
+are the same, before doing anything else with those data.</p>
+
+<p>So, the first thing I&#39;ll do is to get all file names into a vector</p>
+
+<pre><code class="r">mylocal.path &lt;- &quot;C:/Users/Diego/Documents/GitHub/R-Notes&quot;
+setwd(mylocal.path)
+specdata.files &lt;- dir(&quot;./specdata&quot;, full.names = T)
+</code></pre>
+
+<p>Let&#39;s check what kind of object R just built:</p>
+
+<pre><code class="r">is(specdata.files)
+</code></pre>
+
+<pre><code>## [1] &quot;character&quot;           &quot;vector&quot;              &quot;data.frameRowLabels&quot;
+## [4] &quot;SuperClassMethod&quot;
+</code></pre>
+
+<p>Since I don&#39;t know how many columns each file has, I&#39;ll need to use a list
+of lists. This is because a data frame or a matrix will truncate the
+number of columns after the first element gets inserted.  </p>
+
+<p>Let&#39;s initialize our list first:</p>
+
+<pre><code class="r">file.headings &lt;- list()
+</code></pre>
+
+<p>Now let&#39;s loop through all files and get their headings:</p>
+
+<pre><code class="r">for (i in 1:length(specdata.files)) {
+
+    file.headings &lt;- append(file.headings, list(names(read.csv(specdata.files[i], 
+        nrows = 1))))
+}
+</code></pre>
+
+<p>Let&#39;s check the unique headings:</p>
+
+<pre><code class="r">unlist(unique(file.headings))
+</code></pre>
+
+<pre><code>## [1] &quot;Date&quot;    &quot;sulfate&quot; &quot;nitrate&quot; &quot;ID&quot;
+</code></pre>
+
+<p>Now let&#39;s see if all files have the same headings.
+For that I&#39;m going to compare all captured headings against the resultant
+unique headings.
+Let&#39;s first store the list of unique headings into a variable.</p>
+
+<pre><code class="r">unique.headings &lt;- unique(file.headings)
+</code></pre>
+
+<p>Before starting the comparisons, I&#39;m going to create a logical vector, or
+in other words, a vector that will contain only TRUE or FALSE values for
+storing the results of the comparisons.</p>
+
+<pre><code class="r">equal.headings &lt;- vector()
+</code></pre>
+
+<p>Now let&#39;s run the comparisons:</p>
+
+<pre><code class="r">for (i in 1:length(file.headings)) {
+    equal.headings &lt;- c(equal.headings, identical(unique.headings, file.headings[i]))
+}
+</code></pre>
+
+<p>Let&#39;s check how many comparisons returned FALSE:</p>
+
+<pre><code class="r">length(equal.headings[equal.headings == F])
+</code></pre>
+
+<pre><code>## [1] 0
+</code></pre>
+
+<p>And how many returned TRUE:</p>
+
+<pre><code class="r">length(equal.headings[equal.headings == T])
+</code></pre>
+
+<pre><code>## [1] 332
+</code></pre>
+
+<p>In case we wanted to know which files returned TRUE or FALSE, we could use
+the which() function:</p>
+
+<pre><code class="r">which(equal.headings == F)
+</code></pre>
+
+<pre><code>## integer(0)
+</code></pre>
+
+<pre><code class="r">which(equal.headings == T)
+</code></pre>
+
+<pre><code>##   [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+##  [18]  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34
+##  [35]  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51
+##  [52]  52  53  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68
+##  [69]  69  70  71  72  73  74  75  76  77  78  79  80  81  82  83  84  85
+##  [86]  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100 101 102
+## [103] 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119
+## [120] 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136
+## [137] 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153
+## [154] 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170
+## [171] 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187
+## [188] 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204
+## [205] 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221
+## [222] 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238
+## [239] 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255
+## [256] 256 257 258 259 260 261 262 263 264 265 266 267 268 269 270 271 272
+## [273] 273 274 275 276 277 278 279 280 281 282 283 284 285 286 287 288 289
+## [290] 290 291 292 293 294 295 296 297 298 299 300 301 302 303 304 305 306
+## [307] 307 308 309 310 311 312 313 314 315 316 317 318 319 320 321 322 323
+## [324] 324 325 326 327 328 329 330 331 332
+</code></pre>
+
+<p>As you can see, the which function returns the indexes, not the actual
+name of the files. But we can use that for subsetting our vector
+&#39;specdata.files&#39;:</p>
+
+<pre><code class="r">specdata.files[which(equal.headings == T)]
+</code></pre>
+
+<pre><code>##   [1] &quot;./specdata/001.csv&quot; &quot;./specdata/002.csv&quot; &quot;./specdata/003.csv&quot;
+##   [4] &quot;./specdata/004.csv&quot; &quot;./specdata/005.csv&quot; &quot;./specdata/006.csv&quot;
+##   [7] &quot;./specdata/007.csv&quot; &quot;./specdata/008.csv&quot; &quot;./specdata/009.csv&quot;
+##  [10] &quot;./specdata/010.csv&quot; &quot;./specdata/011.csv&quot; &quot;./specdata/012.csv&quot;
+##  [13] &quot;./specdata/013.csv&quot; &quot;./specdata/014.csv&quot; &quot;./specdata/015.csv&quot;
+##  [16] &quot;./specdata/016.csv&quot; &quot;./specdata/017.csv&quot; &quot;./specdata/018.csv&quot;
+##  [19] &quot;./specdata/019.csv&quot; &quot;./specdata/020.csv&quot; &quot;./specdata/021.csv&quot;
+##  [22] &quot;./specdata/022.csv&quot; &quot;./specdata/023.csv&quot; &quot;./specdata/024.csv&quot;
+##  [25] &quot;./specdata/025.csv&quot; &quot;./specdata/026.csv&quot; &quot;./specdata/027.csv&quot;
+##  [28] &quot;./specdata/028.csv&quot; &quot;./specdata/029.csv&quot; &quot;./specdata/030.csv&quot;
+##  [31] &quot;./specdata/031.csv&quot; &quot;./specdata/032.csv&quot; &quot;./specdata/033.csv&quot;
+##  [34] &quot;./specdata/034.csv&quot; &quot;./specdata/035.csv&quot; &quot;./specdata/036.csv&quot;
+##  [37] &quot;./specdata/037.csv&quot; &quot;./specdata/038.csv&quot; &quot;./specdata/039.csv&quot;
+##  [40] &quot;./specdata/040.csv&quot; &quot;./specdata/041.csv&quot; &quot;./specdata/042.csv&quot;
+##  [43] &quot;./specdata/043.csv&quot; &quot;./specdata/044.csv&quot; &quot;./specdata/045.csv&quot;
+##  [46] &quot;./specdata/046.csv&quot; &quot;./specdata/047.csv&quot; &quot;./specdata/048.csv&quot;
+##  [49] &quot;./specdata/049.csv&quot; &quot;./specdata/050.csv&quot; &quot;./specdata/051.csv&quot;
+##  [52] &quot;./specdata/052.csv&quot; &quot;./specdata/053.csv&quot; &quot;./specdata/054.csv&quot;
+##  [55] &quot;./specdata/055.csv&quot; &quot;./specdata/056.csv&quot; &quot;./specdata/057.csv&quot;
+##  [58] &quot;./specdata/058.csv&quot; &quot;./specdata/059.csv&quot; &quot;./specdata/060.csv&quot;
+##  [61] &quot;./specdata/061.csv&quot; &quot;./specdata/062.csv&quot; &quot;./specdata/063.csv&quot;
+##  [64] &quot;./specdata/064.csv&quot; &quot;./specdata/065.csv&quot; &quot;./specdata/066.csv&quot;
+##  [67] &quot;./specdata/067.csv&quot; &quot;./specdata/068.csv&quot; &quot;./specdata/069.csv&quot;
+##  [70] &quot;./specdata/070.csv&quot; &quot;./specdata/071.csv&quot; &quot;./specdata/072.csv&quot;
+##  [73] &quot;./specdata/073.csv&quot; &quot;./specdata/074.csv&quot; &quot;./specdata/075.csv&quot;
+##  [76] &quot;./specdata/076.csv&quot; &quot;./specdata/077.csv&quot; &quot;./specdata/078.csv&quot;
+##  [79] &quot;./specdata/079.csv&quot; &quot;./specdata/080.csv&quot; &quot;./specdata/081.csv&quot;
+##  [82] &quot;./specdata/082.csv&quot; &quot;./specdata/083.csv&quot; &quot;./specdata/084.csv&quot;
+##  [85] &quot;./specdata/085.csv&quot; &quot;./specdata/086.csv&quot; &quot;./specdata/087.csv&quot;
+##  [88] &quot;./specdata/088.csv&quot; &quot;./specdata/089.csv&quot; &quot;./specdata/090.csv&quot;
+##  [91] &quot;./specdata/091.csv&quot; &quot;./specdata/092.csv&quot; &quot;./specdata/093.csv&quot;
+##  [94] &quot;./specdata/094.csv&quot; &quot;./specdata/095.csv&quot; &quot;./specdata/096.csv&quot;
+##  [97] &quot;./specdata/097.csv&quot; &quot;./specdata/098.csv&quot; &quot;./specdata/099.csv&quot;
+## [100] &quot;./specdata/100.csv&quot; &quot;./specdata/101.csv&quot; &quot;./specdata/102.csv&quot;
+## [103] &quot;./specdata/103.csv&quot; &quot;./specdata/104.csv&quot; &quot;./specdata/105.csv&quot;
+## [106] &quot;./specdata/106.csv&quot; &quot;./specdata/107.csv&quot; &quot;./specdata/108.csv&quot;
+## [109] &quot;./specdata/109.csv&quot; &quot;./specdata/110.csv&quot; &quot;./specdata/111.csv&quot;
+## [112] &quot;./specdata/112.csv&quot; &quot;./specdata/113.csv&quot; &quot;./specdata/114.csv&quot;
+## [115] &quot;./specdata/115.csv&quot; &quot;./specdata/116.csv&quot; &quot;./specdata/117.csv&quot;
+## [118] &quot;./specdata/118.csv&quot; &quot;./specdata/119.csv&quot; &quot;./specdata/120.csv&quot;
+## [121] &quot;./specdata/121.csv&quot; &quot;./specdata/122.csv&quot; &quot;./specdata/123.csv&quot;
+## [124] &quot;./specdata/124.csv&quot; &quot;./specdata/125.csv&quot; &quot;./specdata/126.csv&quot;
+## [127] &quot;./specdata/127.csv&quot; &quot;./specdata/128.csv&quot; &quot;./specdata/129.csv&quot;
+## [130] &quot;./specdata/130.csv&quot; &quot;./specdata/131.csv&quot; &quot;./specdata/132.csv&quot;
+## [133] &quot;./specdata/133.csv&quot; &quot;./specdata/134.csv&quot; &quot;./specdata/135.csv&quot;
+## [136] &quot;./specdata/136.csv&quot; &quot;./specdata/137.csv&quot; &quot;./specdata/138.csv&quot;
+## [139] &quot;./specdata/139.csv&quot; &quot;./specdata/140.csv&quot; &quot;./specdata/141.csv&quot;
+## [142] &quot;./specdata/142.csv&quot; &quot;./specdata/143.csv&quot; &quot;./specdata/144.csv&quot;
+## [145] &quot;./specdata/145.csv&quot; &quot;./specdata/146.csv&quot; &quot;./specdata/147.csv&quot;
+## [148] &quot;./specdata/148.csv&quot; &quot;./specdata/149.csv&quot; &quot;./specdata/150.csv&quot;
+## [151] &quot;./specdata/151.csv&quot; &quot;./specdata/152.csv&quot; &quot;./specdata/153.csv&quot;
+## [154] &quot;./specdata/154.csv&quot; &quot;./specdata/155.csv&quot; &quot;./specdata/156.csv&quot;
+## [157] &quot;./specdata/157.csv&quot; &quot;./specdata/158.csv&quot; &quot;./specdata/159.csv&quot;
+## [160] &quot;./specdata/160.csv&quot; &quot;./specdata/161.csv&quot; &quot;./specdata/162.csv&quot;
+## [163] &quot;./specdata/163.csv&quot; &quot;./specdata/164.csv&quot; &quot;./specdata/165.csv&quot;
+## [166] &quot;./specdata/166.csv&quot; &quot;./specdata/167.csv&quot; &quot;./specdata/168.csv&quot;
+## [169] &quot;./specdata/169.csv&quot; &quot;./specdata/170.csv&quot; &quot;./specdata/171.csv&quot;
+## [172] &quot;./specdata/172.csv&quot; &quot;./specdata/173.csv&quot; &quot;./specdata/174.csv&quot;
+## [175] &quot;./specdata/175.csv&quot; &quot;./specdata/176.csv&quot; &quot;./specdata/177.csv&quot;
+## [178] &quot;./specdata/178.csv&quot; &quot;./specdata/179.csv&quot; &quot;./specdata/180.csv&quot;
+## [181] &quot;./specdata/181.csv&quot; &quot;./specdata/182.csv&quot; &quot;./specdata/183.csv&quot;
+## [184] &quot;./specdata/184.csv&quot; &quot;./specdata/185.csv&quot; &quot;./specdata/186.csv&quot;
+## [187] &quot;./specdata/187.csv&quot; &quot;./specdata/188.csv&quot; &quot;./specdata/189.csv&quot;
+## [190] &quot;./specdata/190.csv&quot; &quot;./specdata/191.csv&quot; &quot;./specdata/192.csv&quot;
+## [193] &quot;./specdata/193.csv&quot; &quot;./specdata/194.csv&quot; &quot;./specdata/195.csv&quot;
+## [196] &quot;./specdata/196.csv&quot; &quot;./specdata/197.csv&quot; &quot;./specdata/198.csv&quot;
+## [199] &quot;./specdata/199.csv&quot; &quot;./specdata/200.csv&quot; &quot;./specdata/201.csv&quot;
+## [202] &quot;./specdata/202.csv&quot; &quot;./specdata/203.csv&quot; &quot;./specdata/204.csv&quot;
+## [205] &quot;./specdata/205.csv&quot; &quot;./specdata/206.csv&quot; &quot;./specdata/207.csv&quot;
+## [208] &quot;./specdata/208.csv&quot; &quot;./specdata/209.csv&quot; &quot;./specdata/210.csv&quot;
+## [211] &quot;./specdata/211.csv&quot; &quot;./specdata/212.csv&quot; &quot;./specdata/213.csv&quot;
+## [214] &quot;./specdata/214.csv&quot; &quot;./specdata/215.csv&quot; &quot;./specdata/216.csv&quot;
+## [217] &quot;./specdata/217.csv&quot; &quot;./specdata/218.csv&quot; &quot;./specdata/219.csv&quot;
+## [220] &quot;./specdata/220.csv&quot; &quot;./specdata/221.csv&quot; &quot;./specdata/222.csv&quot;
+## [223] &quot;./specdata/223.csv&quot; &quot;./specdata/224.csv&quot; &quot;./specdata/225.csv&quot;
+## [226] &quot;./specdata/226.csv&quot; &quot;./specdata/227.csv&quot; &quot;./specdata/228.csv&quot;
+## [229] &quot;./specdata/229.csv&quot; &quot;./specdata/230.csv&quot; &quot;./specdata/231.csv&quot;
+## [232] &quot;./specdata/232.csv&quot; &quot;./specdata/233.csv&quot; &quot;./specdata/234.csv&quot;
+## [235] &quot;./specdata/235.csv&quot; &quot;./specdata/236.csv&quot; &quot;./specdata/237.csv&quot;
+## [238] &quot;./specdata/238.csv&quot; &quot;./specdata/239.csv&quot; &quot;./specdata/240.csv&quot;
+## [241] &quot;./specdata/241.csv&quot; &quot;./specdata/242.csv&quot; &quot;./specdata/243.csv&quot;
+## [244] &quot;./specdata/244.csv&quot; &quot;./specdata/245.csv&quot; &quot;./specdata/246.csv&quot;
+## [247] &quot;./specdata/247.csv&quot; &quot;./specdata/248.csv&quot; &quot;./specdata/249.csv&quot;
+## [250] &quot;./specdata/250.csv&quot; &quot;./specdata/251.csv&quot; &quot;./specdata/252.csv&quot;
+## [253] &quot;./specdata/253.csv&quot; &quot;./specdata/254.csv&quot; &quot;./specdata/255.csv&quot;
+## [256] &quot;./specdata/256.csv&quot; &quot;./specdata/257.csv&quot; &quot;./specdata/258.csv&quot;
+## [259] &quot;./specdata/259.csv&quot; &quot;./specdata/260.csv&quot; &quot;./specdata/261.csv&quot;
+## [262] &quot;./specdata/262.csv&quot; &quot;./specdata/263.csv&quot; &quot;./specdata/264.csv&quot;
+## [265] &quot;./specdata/265.csv&quot; &quot;./specdata/266.csv&quot; &quot;./specdata/267.csv&quot;
+## [268] &quot;./specdata/268.csv&quot; &quot;./specdata/269.csv&quot; &quot;./specdata/270.csv&quot;
+## [271] &quot;./specdata/271.csv&quot; &quot;./specdata/272.csv&quot; &quot;./specdata/273.csv&quot;
+## [274] &quot;./specdata/274.csv&quot; &quot;./specdata/275.csv&quot; &quot;./specdata/276.csv&quot;
+## [277] &quot;./specdata/277.csv&quot; &quot;./specdata/278.csv&quot; &quot;./specdata/279.csv&quot;
+## [280] &quot;./specdata/280.csv&quot; &quot;./specdata/281.csv&quot; &quot;./specdata/282.csv&quot;
+## [283] &quot;./specdata/283.csv&quot; &quot;./specdata/284.csv&quot; &quot;./specdata/285.csv&quot;
+## [286] &quot;./specdata/286.csv&quot; &quot;./specdata/287.csv&quot; &quot;./specdata/288.csv&quot;
+## [289] &quot;./specdata/289.csv&quot; &quot;./specdata/290.csv&quot; &quot;./specdata/291.csv&quot;
+## [292] &quot;./specdata/292.csv&quot; &quot;./specdata/293.csv&quot; &quot;./specdata/294.csv&quot;
+## [295] &quot;./specdata/295.csv&quot; &quot;./specdata/296.csv&quot; &quot;./specdata/297.csv&quot;
+## [298] &quot;./specdata/298.csv&quot; &quot;./specdata/299.csv&quot; &quot;./specdata/300.csv&quot;
+## [301] &quot;./specdata/301.csv&quot; &quot;./specdata/302.csv&quot; &quot;./specdata/303.csv&quot;
+## [304] &quot;./specdata/304.csv&quot; &quot;./specdata/305.csv&quot; &quot;./specdata/306.csv&quot;
+## [307] &quot;./specdata/307.csv&quot; &quot;./specdata/308.csv&quot; &quot;./specdata/309.csv&quot;
+## [310] &quot;./specdata/310.csv&quot; &quot;./specdata/311.csv&quot; &quot;./specdata/312.csv&quot;
+## [313] &quot;./specdata/313.csv&quot; &quot;./specdata/314.csv&quot; &quot;./specdata/315.csv&quot;
+## [316] &quot;./specdata/316.csv&quot; &quot;./specdata/317.csv&quot; &quot;./specdata/318.csv&quot;
+## [319] &quot;./specdata/319.csv&quot; &quot;./specdata/320.csv&quot; &quot;./specdata/321.csv&quot;
+## [322] &quot;./specdata/322.csv&quot; &quot;./specdata/323.csv&quot; &quot;./specdata/324.csv&quot;
+## [325] &quot;./specdata/325.csv&quot; &quot;./specdata/326.csv&quot; &quot;./specdata/327.csv&quot;
+## [328] &quot;./specdata/328.csv&quot; &quot;./specdata/329.csv&quot; &quot;./specdata/330.csv&quot;
+## [331] &quot;./specdata/331.csv&quot; &quot;./specdata/332.csv&quot;
+</code></pre>
+
+</body>
+
+</html>
+

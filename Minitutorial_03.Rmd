@@ -1,0 +1,79 @@
+Minitutorial 3
+========================================================
+
+Checking headings
+-----------------
+Now, I would like to know if all headings or column names for all files
+are the same, before doing anything else with those data.
+
+So, the first thing I'll do is to get all file names into a vector
+```{r}
+mylocal.path <- "C:/Users/Diego/Documents/GitHub/R-Notes";
+setwd(mylocal.path);
+specdata.files <- dir("./specdata", full.names=T);
+```
+Let's check what kind of object R just built:
+```{r}
+is(specdata.files);
+```
+Since I don't know how many columns each file has, I'll need to use a list
+of lists. This is because a data frame or a matrix will truncate the
+number of columns after the first element gets inserted.  
+
+Let's initialize our list first:
+```{r}
+file.headings <- list();
+```
+Now let's loop through all files and get their headings:
+```{r}
+for(i in 1:length(specdata.files)){
+ 
+ file.headings <- append(file.headings, 
+                         list(names(read.csv(specdata.files[i],nrows = 1))))
+};
+```
+Let's check the unique headings:
+```{r}
+unlist(unique(file.headings));
+```
+Now let's see if all files have the same headings.
+For that I'm going to compare all captured headings against the resultant
+unique headings.
+Let's first store the list of unique headings into a variable.
+```{r}
+unique.headings <- unique(file.headings);
+```
+Before starting the comparisons, I'm going to create a logical vector, or
+in other words, a vector that will contain only TRUE or FALSE values for
+storing the results of the comparisons.
+```{r}
+ equal.headings <- vector();
+```
+Now let's run the comparisons:
+```{r}
+   for(i in 1:length(file.headings)){
+     equal.headings <- c(equal.headings, 
+                         identical(unique.headings, file.headings[i]))
+   };
+```
+Let's check how many comparisons returned FALSE:
+```{r}
+length(equal.headings[equal.headings==F]);
+```
+And how many returned TRUE:
+```{r}
+ length(equal.headings[equal.headings==T]);
+```
+In case we wanted to know which files returned TRUE or FALSE, we could use
+the which() function:
+```{r}
+which(equal.headings==F);
+which(equal.headings==T);
+```
+As you can see, the which function returns the indexes, not the actual
+name of the files. But we can use that for subsetting our vector
+'specdata.files':
+```{r}
+specdata.files[which(equal.headings==T)];
+```
+
