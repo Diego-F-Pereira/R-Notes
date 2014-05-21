@@ -187,23 +187,34 @@ hljs.initHighlightingOnLoad();
 
 <h2>Using the local help</h2>
 
-<p>Let&#39;s type:</p>
+<h3>Searching for functions:</h3>
 
-<hr/>
+<p>First and foremost we should be able to handle the <strong>base</strong> library.  </p>
 
-<blockquote>
-<p>The help.search function will open a web page at your default web browser when running this script using <strong>knitr</strong>. This is expected.<br/>
-Sometimes though, I received an error:<br/>
-<strong>Firefox can&#39;t establish a connection to the server at &hellip;</strong><br/>
-I&#39;m still trying to figure out how to keep this from happening.</p>
-</blockquote>
+<p>I encourage you to review its documentation by running the next command,</p>
 
-<hr/>
+<pre><code class="r">library(help = base)
+</code></pre>
 
-<pre><code class="r">?help.search;
+<p>and checking each of the functions contained in it by using the <strong>help()</strong> function or the question operator <strong>?</strong>, for example:</p>
+
+<pre><code class="r">help(Control)
 </code></pre>
 
 <pre><code>## starting httpd help server ... done
+</code></pre>
+
+<p>Since usually the name of a function is closely related to the action it performs, it&#39;s useful to try to find functions either by a keyword which can be a whole word, an abbreviation, or an acronym, for example:</p>
+
+<pre><code class="r">apropos(&quot;help&quot;)
+</code></pre>
+
+<pre><code>## [1] &quot;help&quot;         &quot;help.request&quot; &quot;help.search&quot;  &quot;help.start&quot;
+</code></pre>
+
+<p>Let&#39;s type:</p>
+
+<pre><code class="r">?help.search;
 </code></pre>
 
 <p>We see the function <strong>help.search()</strong> can take several <em>parameters</em>.  </p>
@@ -238,6 +249,16 @@ I&#39;m still trying to figure out how to keep this from happening.</p>
 <p>In order to see what the function <strong>ls()</strong> does, type:</p>
 
 <pre><code class="r">?ls();
+</code></pre>
+
+<h3>Find the package a function belongs:</h3>
+
+<p>We can double-check <strong>rm()</strong> really belongs to the base package by using the function <strong>find()</strong></p>
+
+<pre><code class="r">find(&quot;rm&quot;)
+</code></pre>
+
+<pre><code>## [1] &quot;package:base&quot;
 </code></pre>
 
 <h3>Run examples:</h3>
@@ -346,10 +367,10 @@ browseURL(&quot;https://github.com/Data-Camp/Rdocumentation&quot;)
 
 <pre><code>## Installing github repo Rdocumentation/master from Data-Camp
 ## Downloading master.zip from https://github.com/Data-Camp/Rdocumentation/archive/master.zip
-## Installing package from C:\Users\Diego\AppData\Local\Temp\RtmpoT2xvG/master.zip
+## Installing package from C:\Users\Diego\AppData\Local\Temp\RtmpqWFEvm/master.zip
 ## Installing Rdocumentation
 ## &quot;C:/PROGRA~1/R/R-31~1.0/bin/x64/R&quot; --vanilla CMD INSTALL  \
-##   &quot;C:\Users\Diego\AppData\Local\Temp\RtmpoT2xvG\devtools864179c63a8\Rdocumentation-master&quot;  \
+##   &quot;C:\Users\Diego\AppData\Local\Temp\RtmpqWFEvm\devtools198c7ce26ae0\Rdocumentation-master&quot;  \
 ##   --library=&quot;C:/Users/Diego/Documents/R/win-library/3.1&quot; --install-tests
 </code></pre>
 

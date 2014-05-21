@@ -3,18 +3,26 @@ Minitutorial 1
 
 With the aim to provide an example of a complete workflow and to show some useful *techniques* and *functions* when **programming in R** (including how to get the most out of the **documentation**), I have created this *R script*.
 
-I hope someone find it useful.
-
 Using the local help
 --------------------
+### Searching for functions:
+First and foremost we should be able to handle the **base** library.  
+
+I encourage you to review its documentation by running the next command,
+```{r}
+library(help=base)
+```
+and checking each of the functions contained in it by using the **help()** function or the question operator **?**, for example:
+```{r}
+help(Control)
+```
+
+Since usually the name of a function is closely related to the action it performs, it's useful to try to find functions either by a keyword which can be a whole word, an abbreviation, or an acronym, for example:
+
+```{rdir}
+apropos("help")
+```
 Let's type:
- ---
-> The help.search function will open a web page at your default web browser when running this script using **knitr**. This is expected.  
-Sometimes though, I received an error:  
-**Firefox can't establish a connection to the server at ...**  
-I'm still trying to figure out how to keep this from happening.
- 
- ---
 ```{r localhelp,tidy=FALSE,echo=TRUE}
 ?help.search;
 ```
@@ -42,6 +50,11 @@ In order to see what the function **ls()** does, type:
 ?ls();
 ```
 
+### Find the package a function belongs:
+We can double-check **rm()** really belongs to the base package by using the function **find()**
+```{rfind}
+find("rm")
+```
 ### Run examples:
 You can also run the existing examples for a particular function by using the **example()** function.
 ```{r examples}

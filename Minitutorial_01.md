@@ -7,21 +7,41 @@ I hope someone find it useful.
 
 Using the local help
 --------------------
-Let's type:
- ---
-> The help.search function will open a web page at your default web browser when running this script using **knitr**. This is expected.  
-Sometimes though, I received an error:  
-**Firefox can't establish a connection to the server at ...**  
-I'm still trying to figure out how to keep this from happening.
- 
- ---
+### Searching for functions:
+First and foremost we should be able to handle the **base** library.  
+
+I encourage you to review its documentation by running the next command,
 
 ```r
-?help.search;
+library(help = base)
+```
+
+and checking each of the functions contained in it by using the **help()** function or the question operator **?**, for example:
+
+```r
+help(Control)
 ```
 
 ```
 ## starting httpd help server ... done
+```
+
+
+Since usually the name of a function is closely related to the action it performs, it's useful to try to find functions either by a keyword which can be a whole word, an abbreviation, or an acronym, for example:
+
+
+```r
+apropos("help")
+```
+
+```
+## [1] "help"         "help.request" "help.search"  "help.start"
+```
+
+Let's type:
+
+```r
+?help.search;
 ```
 
 We see the function **help.search()** can take several *parameters*.  
@@ -51,6 +71,17 @@ In order to see what the function **ls()** does, type:
 ?ls();
 ```
 
+
+### Find the package a function belongs:
+We can double-check **rm()** really belongs to the base package by using the function **find()**
+
+```r
+find("rm")
+```
+
+```
+## [1] "package:base"
+```
 
 ### Run examples:
 You can also run the existing examples for a particular function by using the **example()** function.
@@ -162,10 +193,10 @@ install_github("Rdocumentation", "Data-Camp")
 ```
 ## Installing github repo Rdocumentation/master from Data-Camp
 ## Downloading master.zip from https://github.com/Data-Camp/Rdocumentation/archive/master.zip
-## Installing package from C:\Users\Diego\AppData\Local\Temp\RtmpoT2xvG/master.zip
+## Installing package from C:\Users\Diego\AppData\Local\Temp\RtmpqWFEvm/master.zip
 ## Installing Rdocumentation
 ## "C:/PROGRA~1/R/R-31~1.0/bin/x64/R" --vanilla CMD INSTALL  \
-##   "C:\Users\Diego\AppData\Local\Temp\RtmpoT2xvG\devtools864179c63a8\Rdocumentation-master"  \
+##   "C:\Users\Diego\AppData\Local\Temp\RtmpqWFEvm\devtools198c7ce26ae0\Rdocumentation-master"  \
 ##   --library="C:/Users/Diego/Documents/R/win-library/3.1" --install-tests
 ```
 
