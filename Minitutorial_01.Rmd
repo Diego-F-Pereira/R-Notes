@@ -14,7 +14,7 @@ library(help=base)
 ```
 and checking each of the functions contained in it by using the **help()** function or the question operator **?**, for example:
 ```{r}
-help(Control)
+help("Control")
 ```
 
 Since usually the name of a function is closely related to the action it performs, it's useful to try to find functions either by a keyword which can be a whole word, an abbreviation, or an acronym, for example:
