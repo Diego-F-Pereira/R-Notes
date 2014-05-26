@@ -15,6 +15,14 @@ apropos("help")
 ?help.search;
 
 
+## ----RsiteSearch---------------------------------------------------------
+RSiteSearch("help")
+
+
+## ------------------------------------------------------------------------
+RSiteSearch("{remove objects}", restrict = "function")
+
+
 ## ----localhelpex---------------------------------------------------------
 help.search("remove objects", package = "base");
 

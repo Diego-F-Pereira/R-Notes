@@ -26,11 +26,15 @@ localpath.file <- "./rprog%2Fdata%2Fspecdata.zip";
 
 
 ## ------------------------------------------------------------------------
-download.file(dataset.url, localpath.file, mode = "wb");
+if(file.exists(localpath.file)==F){
+  download.file(dataset.url, localpath.file, mode = "wb");
+}
 
 
 ## ------------------------------------------------------------------------
-unzip(localpath.file);
+if(file_test("-d", "specdata")==F){
+  unzip(localpath.file);
+}
 
 
 ## ------------------------------------------------------------------------
@@ -55,7 +59,9 @@ sessionInfo();
 
 
 ## ------------------------------------------------------------------------
-install.packages("sos", repos="http://cran.rstudio.com/");
+if("sos" %in% rownames(installed.packages()) == F){
+  install.packages("sos", repos="http://cran.rstudio.com/");
+}
 
 
 ## ------------------------------------------------------------------------
@@ -66,8 +72,25 @@ library(sos); # Review the use of the require() function.
 cran.help <- findFn("{file extensions}",sortby="MaxScore");
 
 
+## ----isclass-------------------------------------------------------------
+is(cran.help)
+class(cran.help)
+
+
+## ----objectsuper---------------------------------------------------------
+is(cran.help, "data.frame")
+
+
+## ----methClass-----------------------------------------------------------
+methods(class="data.frame")
+
+
 ## ------------------------------------------------------------------------
 summary(cran.help, minPackages = 20);
+
+
+## ----summary.findFn,tidy=FALSE-------------------------------------------
+?summary.findFn
 
 
 ## ------------------------------------------------------------------------
