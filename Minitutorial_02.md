@@ -57,8 +57,12 @@ Note the **./** This implies I'm using the working directory.
 Finally let's download the dataset.
 
 ```r
-download.file(dataset.url, localpath.file, mode = "wb")
+if (file.exists(localpath.file) == F) {
+    download.file(dataset.url, localpath.file, mode = "wb")
+}
 ```
+
+I use a conditional for checking for the existence of the file in my working directory because I don't want to keep downloading over and over the same file.  
 
 Note that I use the **mode** `mode = "wb"` (binary) in order to avoid corruption.
 
@@ -67,10 +71,12 @@ Unzip
 Let's unzip the file.
 
 ```r
-unzip(localpath.file)
+if (file_test("-d", "specdata") == F) {
+    unzip(localpath.file)
+}
 ```
 
-
+Here again I use a conditional, this time for checking for the existence of the directory "specdata" since I don't want to rewrite it if it already exists.  
 
 ```r
 # House Keeping -----------------------------------------------------------
@@ -87,11 +93,14 @@ dir(); # AKA list.files()
 ```
 
 ```
-## [1] "Minitutorial_01.html"        "Minitutorial_01.md"         
-## [3] "Minitutorial_01.Rmd"         "Minitutorial_02.html"       
-## [5] "Minitutorial_02.md"          "Minitutorial_02.Rmd"        
-## [7] "Minitutorial_03.Rmd"         "rprog%2Fdata%2Fspecdata.zip"
-## [9] "specdata"
+##  [1] "Conditionals.R"              "Minitutorial_01.html"       
+##  [3] "Minitutorial_01.md"          "Minitutorial_01.R"          
+##  [5] "Minitutorial_01.Rmd"         "Minitutorial_02.html"       
+##  [7] "Minitutorial_02.md"          "Minitutorial_02.R"          
+##  [9] "Minitutorial_02.Rmd"         "Minitutorial_03.html"       
+## [11] "Minitutorial_03.md"          "Minitutorial_03.R"          
+## [13] "Minitutorial_03.Rmd"         "README"                     
+## [15] "rprog%2Fdata%2Fspecdata.zip" "specdata"
 ```
 
 Note **specdata** has no extension. This is because it is a folder.
@@ -101,8 +110,31 @@ list.dirs()
 ```
 
 ```
-## [1] "."          "./specdata"
+##  [1] "."                               "./.git"                         
+##  [3] "./.git/hooks"                    "./.git/info"                    
+##  [5] "./.git/logs"                     "./.git/logs/refs"               
+##  [7] "./.git/logs/refs/heads"          "./.git/logs/refs/remotes"       
+##  [9] "./.git/logs/refs/remotes/origin" "./.git/objects"                 
+## [11] "./.git/objects/15"               "./.git/objects/16"              
+## [13] "./.git/objects/1b"               "./.git/objects/1f"              
+## [15] "./.git/objects/27"               "./.git/objects/2a"              
+## [17] "./.git/objects/38"               "./.git/objects/40"              
+## [19] "./.git/objects/49"               "./.git/objects/4a"              
+## [21] "./.git/objects/4f"               "./.git/objects/52"              
+## [23] "./.git/objects/5c"               "./.git/objects/5e"              
+## [25] "./.git/objects/93"               "./.git/objects/af"              
+## [27] "./.git/objects/c0"               "./.git/objects/cc"              
+## [29] "./.git/objects/d4"               "./.git/objects/d8"              
+## [31] "./.git/objects/da"               "./.git/objects/e2"              
+## [33] "./.git/objects/e6"               "./.git/objects/e7"              
+## [35] "./.git/objects/ef"               "./.git/objects/info"            
+## [37] "./.git/objects/pack"             "./.git/refs"                    
+## [39] "./.git/refs/heads"               "./.git/refs/remotes"            
+## [41] "./.git/refs/remotes/origin"      "./.git/refs/tags"               
+## [43] "./specdata"
 ```
+
+Interestingly, **list.dirs()** prints also hidden folders (all **git** folder and subfolders are hidden).  
 
 Let's take a look at what is contained at the spectdata folder:
 
@@ -226,21 +258,12 @@ we know.
 Install the **"sos"** package
 
 ```r
-install.packages("sos", repos = "http://cran.rstudio.com/")
+if ("sos" %in% rownames(installed.packages()) == F) {
+    install.packages("sos", repos = "http://cran.rstudio.com/")
+}
 ```
 
-```
-## Installing package into 'C:/Users/Diego/Documents/R/win-library/3.1'
-## (as 'lib' is unspecified)
-```
-
-```
-## package 'sos' successfully unpacked and MD5 sums checked
-## 
-## The downloaded binary packages are in
-## 	C:\Users\Diego\AppData\Local\Temp\Rtmp0QBWsV\downloaded_packages
-```
-
+Here I first check if the package "sos" is already installed, and if not I install it.
 ### Loading packages:
 Load the **"sos"** package
 
@@ -271,7 +294,77 @@ cran.help <- findFn("{file extensions}", sortby = "MaxScore")
 ## Downloaded 39 links in 29 packages.
 ```
 
-Let's take a look at the packages returned using the **summary()** function first and then using the **PackageSummary()** function.
+### Getting the class of an object
+Well, I just passed "whatever" was returned by the **findFn()** function to a new variable.  
+However I don't know what kind of object it is. So let's find it.
+
+```r
+is(cran.help)
+```
+
+```
+## [1] "findFn"
+```
+
+```r
+class(cran.help)
+```
+
+```
+## [1] "findFn"     "data.frame"
+```
+
+So it seems the newly created object belongs to a data.frame superclass.
+### Test if an object can be treated as from a superclass.
+
+```r
+is(cran.help, "data.frame")
+```
+
+```
+## [1] TRUE
+```
+
+Perfect. My object *cran.help* can use data.frame methods!
+### Getting the methods of a class
+
+```r
+methods(class = "data.frame")
+```
+
+```
+##  [1] $.data.frame             $<-.data.frame          
+##  [3] [.data.frame             [[.data.frame           
+##  [5] [[<-.data.frame          [<-.data.frame          
+##  [7] aggregate.data.frame     anyDuplicated.data.frame
+##  [9] as.data.frame.data.frame as.list.data.frame      
+## [11] as.matrix.data.frame     by.data.frame           
+## [13] cbind.data.frame         dim.data.frame          
+## [15] dimnames.data.frame      dimnames<-.data.frame   
+## [17] droplevels.data.frame    duplicated.data.frame   
+## [19] edit.data.frame*         format.data.frame       
+## [21] formula.data.frame*      head.data.frame*        
+## [23] is.na.data.frame         Math.data.frame         
+## [25] merge.data.frame         na.exclude.data.frame*  
+## [27] na.omit.data.frame*      Ops.data.frame          
+## [29] PackageSum2.data.frame*  plot.data.frame*        
+## [31] print.data.frame         prompt.data.frame*      
+## [33] rbind.data.frame         row.names.data.frame    
+## [35] row.names<-.data.frame   rowsum.data.frame       
+## [37] split.data.frame         split<-.data.frame      
+## [39] stack.data.frame*        str.data.frame*         
+## [41] subset.data.frame        summary.data.frame      
+## [43] Summary.data.frame       t.data.frame            
+## [45] tail.data.frame*         transform.data.frame    
+## [47] unique.data.frame        unstack.data.frame*     
+## [49] within.data.frame       
+## 
+##    Non-visible functions are asterisked
+```
+
+Well, we have several methods for working with data frames.  
+
+Let's take a look at the packages returned by using the **summary()** function first and then using the **PackageSummary()** function.
 
 ```r
 summary(cran.help, minPackages = 20)
@@ -319,6 +412,20 @@ summary(cran.help, minPackages = 20)
 ## 29         subselect     1        1          1 2013-07-18
 ```
 
+The response from the **summary()** call seems different from the one we usually see when using the **base** package.  
+Let's see if there is an specific method **summary** for the **findFn** object created by the **findFn()** function:
+
+```r
+?summary.findFn
+```
+
+```
+## starting httpd help server ... done
+```
+
+Effectively the **findFn()** has a method **summary** and the help page explains which information is returned when using it.  
+
+Now let's compare these results with the ones returned by the **PackageSummary()** function.
 
 ```r
 PackageSummary(cran.help)
@@ -356,6 +463,8 @@ PackageSummary(cran.help)
 ## 26           RSurvey     1        1          1 2014-01-09 08:09:38
 ## 27         subselect     1        1          1 2013-07-18 08:06:36
 ```
+
+With a few differences, results are pretty similar, so we can use any of them for reviewing the results.
 
 By inspecting the names of the packages returned there is one that calls my attention: **'tools'**.
 
@@ -457,6 +566,8 @@ for (i in 1:length(b)) {
 ```
 
 Here I used a simple loop for **merging** the values of the character vector and the list according to their indexes.  
+
+I would like to highlight that is more efficient to **preallocate** objects and filling them when needed than appending rows and/or columns each time. However this is not always possible.   
 
 ### Coercing objects as data frames:
 Note that as soon I capture every index I transform it into a data frame using the **as.data.frame()** function and assign the column names with the **setNames()** function.  
@@ -597,8 +708,8 @@ gc()
 ```
 
 ```
-##          used (Mb) gc trigger  (Mb) max used  (Mb)
-## Ncells 291043 15.6     597831  32.0   597831  32.0
-## Vcells 531986  4.1   22748208 173.6 39740844 303.2
+##          used (Mb) gc trigger (Mb) max used (Mb)
+## Ncells 310735 16.6     467875 25.0   407500 21.8
+## Vcells 556071  4.3    1031040  7.9   859060  6.6
 ```
 

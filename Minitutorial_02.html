@@ -228,8 +228,12 @@ rm(mylocal.path)
 
 <p>Finally let&#39;s download the dataset.</p>
 
-<pre><code class="r">download.file(dataset.url, localpath.file, mode = &quot;wb&quot;)
+<pre><code class="r">if (file.exists(localpath.file) == F) {
+    download.file(dataset.url, localpath.file, mode = &quot;wb&quot;)
+}
 </code></pre>
+
+<p>I use a conditional for checking for the existence of the file in my working directory because I don&#39;t want to keep downloading over and over the same file.  </p>
 
 <p>Note that I use the <strong>mode</strong> <code>mode = &quot;wb&quot;</code> (binary) in order to avoid corruption.</p>
 
@@ -237,8 +241,12 @@ rm(mylocal.path)
 
 <p>Let&#39;s unzip the file.</p>
 
-<pre><code class="r">unzip(localpath.file)
+<pre><code class="r">if (file_test(&quot;-d&quot;, &quot;specdata&quot;) == F) {
+    unzip(localpath.file)
+}
 </code></pre>
+
+<p>Here again I use a conditional, this time for checking for the existence of the directory &ldquo;specdata&rdquo; since I don&#39;t want to rewrite it if it already exists.  </p>
 
 <pre><code class="r"># House Keeping -----------------------------------------------------------
 rm(list = c(&quot;dataset.url&quot;, &quot;localpath.file&quot;))
@@ -251,11 +259,14 @@ rm(list = c(&quot;dataset.url&quot;, &quot;localpath.file&quot;))
 <pre><code class="r">dir(); # AKA list.files()
 </code></pre>
 
-<pre><code>## [1] &quot;Minitutorial_01.html&quot;        &quot;Minitutorial_01.md&quot;         
-## [3] &quot;Minitutorial_01.Rmd&quot;         &quot;Minitutorial_02.html&quot;       
-## [5] &quot;Minitutorial_02.md&quot;          &quot;Minitutorial_02.Rmd&quot;        
-## [7] &quot;Minitutorial_03.Rmd&quot;         &quot;rprog%2Fdata%2Fspecdata.zip&quot;
-## [9] &quot;specdata&quot;
+<pre><code>##  [1] &quot;Conditionals.R&quot;              &quot;Minitutorial_01.html&quot;       
+##  [3] &quot;Minitutorial_01.md&quot;          &quot;Minitutorial_01.R&quot;          
+##  [5] &quot;Minitutorial_01.Rmd&quot;         &quot;Minitutorial_02.html&quot;       
+##  [7] &quot;Minitutorial_02.md&quot;          &quot;Minitutorial_02.R&quot;          
+##  [9] &quot;Minitutorial_02.Rmd&quot;         &quot;Minitutorial_03.html&quot;       
+## [11] &quot;Minitutorial_03.md&quot;          &quot;Minitutorial_03.R&quot;          
+## [13] &quot;Minitutorial_03.Rmd&quot;         &quot;README&quot;                     
+## [15] &quot;rprog%2Fdata%2Fspecdata.zip&quot; &quot;specdata&quot;
 </code></pre>
 
 <p>Note <strong>specdata</strong> has no extension. This is because it is a folder.</p>
@@ -263,8 +274,31 @@ rm(list = c(&quot;dataset.url&quot;, &quot;localpath.file&quot;))
 <pre><code class="r">list.dirs()
 </code></pre>
 
-<pre><code>## [1] &quot;.&quot;          &quot;./specdata&quot;
+<pre><code>##  [1] &quot;.&quot;                               &quot;./.git&quot;                         
+##  [3] &quot;./.git/hooks&quot;                    &quot;./.git/info&quot;                    
+##  [5] &quot;./.git/logs&quot;                     &quot;./.git/logs/refs&quot;               
+##  [7] &quot;./.git/logs/refs/heads&quot;          &quot;./.git/logs/refs/remotes&quot;       
+##  [9] &quot;./.git/logs/refs/remotes/origin&quot; &quot;./.git/objects&quot;                 
+## [11] &quot;./.git/objects/15&quot;               &quot;./.git/objects/16&quot;              
+## [13] &quot;./.git/objects/1b&quot;               &quot;./.git/objects/1f&quot;              
+## [15] &quot;./.git/objects/27&quot;               &quot;./.git/objects/2a&quot;              
+## [17] &quot;./.git/objects/38&quot;               &quot;./.git/objects/40&quot;              
+## [19] &quot;./.git/objects/49&quot;               &quot;./.git/objects/4a&quot;              
+## [21] &quot;./.git/objects/4f&quot;               &quot;./.git/objects/52&quot;              
+## [23] &quot;./.git/objects/5c&quot;               &quot;./.git/objects/5e&quot;              
+## [25] &quot;./.git/objects/93&quot;               &quot;./.git/objects/af&quot;              
+## [27] &quot;./.git/objects/c0&quot;               &quot;./.git/objects/cc&quot;              
+## [29] &quot;./.git/objects/d4&quot;               &quot;./.git/objects/d8&quot;              
+## [31] &quot;./.git/objects/da&quot;               &quot;./.git/objects/e2&quot;              
+## [33] &quot;./.git/objects/e6&quot;               &quot;./.git/objects/e7&quot;              
+## [35] &quot;./.git/objects/ef&quot;               &quot;./.git/objects/info&quot;            
+## [37] &quot;./.git/objects/pack&quot;             &quot;./.git/refs&quot;                    
+## [39] &quot;./.git/refs/heads&quot;               &quot;./.git/refs/remotes&quot;            
+## [41] &quot;./.git/refs/remotes/origin&quot;      &quot;./.git/refs/tags&quot;               
+## [43] &quot;./specdata&quot;
 </code></pre>
+
+<p>Interestingly, <strong>list.dirs()</strong> prints also hidden folders (all <strong>git</strong> folder and subfolders are hidden).  </p>
 
 <p>Let&#39;s take a look at what is contained at the spectdata folder:</p>
 
@@ -391,18 +425,12 @@ we know. </p>
 
 <p>Install the <strong>&ldquo;sos&rdquo;</strong> package</p>
 
-<pre><code class="r">install.packages(&quot;sos&quot;, repos = &quot;http://cran.rstudio.com/&quot;)
+<pre><code class="r">if (&quot;sos&quot; %in% rownames(installed.packages()) == F) {
+    install.packages(&quot;sos&quot;, repos = &quot;http://cran.rstudio.com/&quot;)
+}
 </code></pre>
 
-<pre><code>## Installing package into &#39;C:/Users/Diego/Documents/R/win-library/3.1&#39;
-## (as &#39;lib&#39; is unspecified)
-</code></pre>
-
-<pre><code>## package &#39;sos&#39; successfully unpacked and MD5 sums checked
-## 
-## The downloaded binary packages are in
-##  C:\Users\Diego\AppData\Local\Temp\Rtmp0QBWsV\downloaded_packages
-</code></pre>
+<p>Here I first check if the package &ldquo;sos&rdquo; is already installed, and if not I install it.</p>
 
 <h3>Loading packages:</h3>
 
@@ -431,7 +459,72 @@ we know. </p>
 ## Downloaded 39 links in 29 packages.
 </code></pre>
 
-<p>Let&#39;s take a look at the packages returned using the <strong>summary()</strong> function first and then using the <strong>PackageSummary()</strong> function.</p>
+<h3>Getting the class of an object</h3>
+
+<p>Well, I just passed &ldquo;whatever&rdquo; was returned by the <strong>findFn()</strong> function to a new variable.<br/>
+However I don&#39;t know what kind of object it is. So let&#39;s find it.</p>
+
+<pre><code class="r">is(cran.help)
+</code></pre>
+
+<pre><code>## [1] &quot;findFn&quot;
+</code></pre>
+
+<pre><code class="r">class(cran.help)
+</code></pre>
+
+<pre><code>## [1] &quot;findFn&quot;     &quot;data.frame&quot;
+</code></pre>
+
+<p>So it seems the newly created object belongs to a data.frame superclass.</p>
+
+<h3>Test if an object can be treated as from a superclass.</h3>
+
+<pre><code class="r">is(cran.help, &quot;data.frame&quot;)
+</code></pre>
+
+<pre><code>## [1] TRUE
+</code></pre>
+
+<p>Perfect. My object <em>cran.help</em> can use data.frame methods!</p>
+
+<h3>Getting the methods of a class</h3>
+
+<pre><code class="r">methods(class = &quot;data.frame&quot;)
+</code></pre>
+
+<pre><code>##  [1] $.data.frame             $&lt;-.data.frame          
+##  [3] [.data.frame             [[.data.frame           
+##  [5] [[&lt;-.data.frame          [&lt;-.data.frame          
+##  [7] aggregate.data.frame     anyDuplicated.data.frame
+##  [9] as.data.frame.data.frame as.list.data.frame      
+## [11] as.matrix.data.frame     by.data.frame           
+## [13] cbind.data.frame         dim.data.frame          
+## [15] dimnames.data.frame      dimnames&lt;-.data.frame   
+## [17] droplevels.data.frame    duplicated.data.frame   
+## [19] edit.data.frame*         format.data.frame       
+## [21] formula.data.frame*      head.data.frame*        
+## [23] is.na.data.frame         Math.data.frame         
+## [25] merge.data.frame         na.exclude.data.frame*  
+## [27] na.omit.data.frame*      Ops.data.frame          
+## [29] PackageSum2.data.frame*  plot.data.frame*        
+## [31] print.data.frame         prompt.data.frame*      
+## [33] rbind.data.frame         row.names.data.frame    
+## [35] row.names&lt;-.data.frame   rowsum.data.frame       
+## [37] split.data.frame         split&lt;-.data.frame      
+## [39] stack.data.frame*        str.data.frame*         
+## [41] subset.data.frame        summary.data.frame      
+## [43] Summary.data.frame       t.data.frame            
+## [45] tail.data.frame*         transform.data.frame    
+## [47] unique.data.frame        unstack.data.frame*     
+## [49] within.data.frame       
+## 
+##    Non-visible functions are asterisked
+</code></pre>
+
+<p>Well, we have several methods for working with data frames.  </p>
+
+<p>Let&#39;s take a look at the packages returned by using the <strong>summary()</strong> function first and then using the <strong>PackageSummary()</strong> function.</p>
 
 <pre><code class="r">summary(cran.help, minPackages = 20)
 </code></pre>
@@ -477,6 +570,19 @@ we know. </p>
 ## 29         subselect     1        1          1 2013-07-18
 </code></pre>
 
+<p>The response from the <strong>summary()</strong> call seems different from the one we usually see when using the <strong>base</strong> package.<br/>
+Let&#39;s see if there is an specific method <strong>summary</strong> for the <strong>findFn</strong> object created by the <strong>findFn()</strong> function:</p>
+
+<pre><code class="r">?summary.findFn
+</code></pre>
+
+<pre><code>## starting httpd help server ... done
+</code></pre>
+
+<p>Effectively the <strong>findFn()</strong> has a method <strong>summary</strong> and the help page explains which information is returned when using it.  </p>
+
+<p>Now let&#39;s compare these results with the ones returned by the <strong>PackageSummary()</strong> function.</p>
+
 <pre><code class="r">PackageSummary(cran.help)
 </code></pre>
 
@@ -511,6 +617,8 @@ we know. </p>
 ## 26           RSurvey     1        1          1 2014-01-09 08:09:38
 ## 27         subselect     1        1          1 2013-07-18 08:06:36
 </code></pre>
+
+<p>With a few differences, results are pretty similar, so we can use any of them for reviewing the results.</p>
 
 <p>By inspecting the names of the packages returned there is one that calls my attention: <strong>&#39;tools&#39;</strong>.</p>
 
@@ -615,6 +723,8 @@ d &lt;- strsplit(sub(&quot;^[0-9]?\\: &quot;, &quot;&quot;,
 </code></pre>
 
 <p>Here I used a simple loop for <strong>merging</strong> the values of the character vector and the list according to their indexes.  </p>
+
+<p>I would like to highlight that is more efficient to <strong>preallocate</strong> objects and filling them when needed than appending rows and/or columns each time. However this is not always possible.   </p>
 
 <h3>Coercing objects as data frames:</h3>
 
@@ -749,9 +859,9 @@ d &lt;- strsplit(sub(&quot;^[0-9]?\\: &quot;, &quot;&quot;,
 gc()
 </code></pre>
 
-<pre><code>##          used (Mb) gc trigger  (Mb) max used  (Mb)
-## Ncells 291043 15.6     597831  32.0   597831  32.0
-## Vcells 531986  4.1   22748208 173.6 39740844 303.2
+<pre><code>##          used (Mb) gc trigger (Mb) max used (Mb)
+## Ncells 310735 16.6     467875 25.0   407500 21.8
+## Vcells 556071  4.3    1031040  7.9   859060  6.6
 </code></pre>
 
 </body>

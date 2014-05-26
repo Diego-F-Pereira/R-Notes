@@ -3,8 +3,6 @@ Minitutorial 1
 
 With the aim to provide an example of a complete workflow and to show some useful *techniques* and *functions* when **programming in R** (including how to get the most out of the **documentation**), I have created this *R script*.
 
-I hope someone find it useful.
-
 Using the local help
 --------------------
 ### Searching for functions:
@@ -19,7 +17,7 @@ library(help = base)
 and checking each of the functions contained in it by using the **help()** function or the question operator **?**, for example:
 
 ```r
-help(Control)
+help("Control")
 ```
 
 ```
@@ -72,7 +70,7 @@ In order to see what the function **ls()** does, type:
 ```
 
 
-### Find the package a function belongs:
+### Find the package a function belongs to:
 We can double-check **rm()** really belongs to the base package by using the function **find()**
 
 ```r
@@ -193,10 +191,10 @@ install_github("Rdocumentation", "Data-Camp")
 ```
 ## Installing github repo Rdocumentation/master from Data-Camp
 ## Downloading master.zip from https://github.com/Data-Camp/Rdocumentation/archive/master.zip
-## Installing package from C:\Users\Diego\AppData\Local\Temp\RtmpqWFEvm/master.zip
+## Installing package from C:\Users\Diego\AppData\Local\Temp\RtmpCEj1eW/master.zip
 ## Installing Rdocumentation
 ## "C:/PROGRA~1/R/R-31~1.0/bin/x64/R" --vanilla CMD INSTALL  \
-##   "C:\Users\Diego\AppData\Local\Temp\RtmpqWFEvm\devtools198c7ce26ae0\Rdocumentation-master"  \
+##   "C:\Users\Diego\AppData\Local\Temp\RtmpCEj1eW\devtools1b5c56a317c2\Rdocumentation-master"  \
 ##   --library="C:/Users/Diego/Documents/R/win-library/3.1" --install-tests
 ```
 

@@ -50,7 +50,7 @@ In order to see what the function **ls()** does, type:
 ?ls();
 ```
 
-### Find the package a function belongs:
+### Find the package a function belongs to:
 We can double-check **rm()** really belongs to the base package by using the function **find()**
 ```{rfind}
 find("rm")

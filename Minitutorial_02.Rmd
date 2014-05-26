@@ -45,17 +45,23 @@ Note the **./** This implies I'm using the working directory.
 
 Finally let's download the dataset.
 ```{r}
-download.file(dataset.url, localpath.file, mode = "wb");
+if(file.exists(localpath.file)==F){
+  download.file(dataset.url, localpath.file, mode = "wb");
+}
 ```
+I use a conditional for checking for the existence of the file in my working directory because I don't want to keep downloading over and over the same file.  
+
 Note that I use the **mode** `mode = "wb"` (binary) in order to avoid corruption.
 
 Unzip
 -----
 Let's unzip the file.
 ```{r}
-unzip(localpath.file);
+if(file_test("-d", "specdata")==F){
+  unzip(localpath.file);
+}
 ```
-
+Here again I use a conditional, this time for checking for the existence of the directory "specdata" since I don't want to rewrite it if it already exists.  
 ```{r}
 # House Keeping -----------------------------------------------------------
 rm(list=c("dataset.url","localpath.file"))
@@ -71,6 +77,8 @@ Note **specdata** has no extension. This is because it is a folder.
 ```{r}
 list.dirs();
 ```
+Interestingly, **list.dirs()** prints also hidden folders (all **git** folder and subfolders are hidden).  
+
 Let's take a look at what is contained at the spectdata folder:
 ```{r}
 dir("./specdata");
@@ -116,8 +124,11 @@ we know.
 ### Installing packages:
 Install the **"sos"** package
 ```{r}
-install.packages("sos", repos="http://cran.rstudio.com/");
+if("sos" %in% rownames(installed.packages()) == F){
+  install.packages("sos", repos="http://cran.rstudio.com/");
+}
 ```
+Here I first check if the package "sos" is already installed, and if not I install it.
 ### Loading packages:
 Load the **"sos"** package
 ```{r}
@@ -128,13 +139,42 @@ Let's find in the help pages for a function that includes the **keywords**
 ```{r}
 cran.help <- findFn("{file extensions}",sortby="MaxScore");
 ```
-Let's take a look at the packages returned using the **summary()** function first and then using the **PackageSummary()** function.
+### Getting the class of an object
+Well, I just passed "whatever" was returned by the **findFn()** function to a new variable.  
+However I don't know what kind of object it is. So let's find it.
+```{risclass}
+is(cran.help)
+class(cran.help)
+```
+So it seems the newly created object belongs to a data.frame superclass.
+### Test if an object can be treated as from a superclass.
+```{robjectsuper}
+is(cran.help, "data.frame")
+```
+Perfect. My object *cran.help* can use data.frame methods!
+### Getting the methods of a class
+```{rmethClass}
+methods(class="data.frame")
+```
+Well, we have several methods for working with data frames.  
+
+Let's take a look at the packages returned by using the **summary()** function first and then using the **PackageSummary()** function.
 ```{r}
 summary(cran.help, minPackages = 20);
 ```
+The response from the **summary()** call seems different from the one we usually see when using the **base** package.  
+Let's see if there is an specific method **summary** for the **findFn** object created by the **findFn()** function:
+```{rsummary.findFn,tidy=FALSE}
+?summary.findFn
+```
+Effectively the **findFn()** has a method **summary** and the help page explains which information is returned when using it.  
+
+Now let's compare these results with the ones returned by the **PackageSummary()** function.
 ```{r}
 PackageSummary(cran.help);
 ```
+With a few differences, results are pretty similar, so we can use any of them for reviewing the results.
+
 By inspecting the names of the packages returned there is one that calls my attention: **'tools'**.
 
 It would be great if that package had a vignette, so let's see how we can query for that.
@@ -217,6 +257,8 @@ for (i in 1:length(b)){
 };
 ```
 Here I used a simple loop for **merging** the values of the character vector and the list according to their indexes.  
+
+I would like to highlight that is more efficient to **preallocate** objects and filling them when needed than appending rows and/or columns each time. However this is not always possible.   
 
 ### Coercing objects as data frames:
 Note that as soon I capture every index I transform it into a data frame using the **as.data.frame()** function and assign the column names with the **setNames()** function.  
