@@ -46,6 +46,42 @@ We see the function **help.search()** can take several *parameters*.
 
 We will use by now only the arguments *pattern* and *package*.
 
+Also note that in the section **See Also** appear links to other functions.  Particularly look at this line:
+
+ ---
+> RSiteSearch to access an on-line search of R resources.
+
+ ---
+The function **RSiteSearch()** uses an on-line search engine for finding keywords and phrases through the R documentation.  Very powerful but you need to learn how to use it in order to get the results you want other wise you can end up with thousand documents not related with what you were looking for.
+
+Type for example:
+
+```r
+RSiteSearch("help")
+```
+
+```
+## A search query has been submitted to http://search.r-project.org
+## The results page should open in your browser shortly
+```
+
+The search returned 4027 documents.
+
+So a better search will look like this:
+
+```r
+RSiteSearch("{remove objects}", restrict = "function")
+```
+
+```
+## A search query has been submitted to http://search.r-project.org
+## The results page should open in your browser shortly
+```
+
+
+Let's back to our local search, and see what the **help.search()** function can do.
+
+
 ```r
 help.search("remove objects", package = "base")
 ```
@@ -191,10 +227,10 @@ install_github("Rdocumentation", "Data-Camp")
 ```
 ## Installing github repo Rdocumentation/master from Data-Camp
 ## Downloading master.zip from https://github.com/Data-Camp/Rdocumentation/archive/master.zip
-## Installing package from C:\Users\Diego\AppData\Local\Temp\RtmpCEj1eW/master.zip
+## Installing package from C:\Users\Diego\AppData\Local\Temp\RtmpWWhRHb/master.zip
 ## Installing Rdocumentation
 ## "C:/PROGRA~1/R/R-31~1.0/bin/x64/R" --vanilla CMD INSTALL  \
-##   "C:\Users\Diego\AppData\Local\Temp\RtmpCEj1eW\devtools1b5c56a317c2\Rdocumentation-master"  \
+##   "C:\Users\Diego\AppData\Local\Temp\RtmpWWhRHb\devtools12c4321e74ab\Rdocumentation-master"  \
 ##   --library="C:/Users/Diego/Documents/R/win-library/3.1" --install-tests
 ```
 
