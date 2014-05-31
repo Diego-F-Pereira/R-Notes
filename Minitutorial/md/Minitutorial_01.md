@@ -52,7 +52,7 @@ Also note that in the section **See Also** appear links to other functions.  Par
 > RSiteSearch to access an on-line search of R resources.
 
  ---
-The function **RSiteSearch()** uses an on-line search engine for finding keywords and phrases through the R documentation.  Very powerful but you need to learn how to use it in order to get the results you want other wise you can end up with thousand documents not related with what you were looking for.
+The function **RSiteSearch()** uses an on-line search engine for finding keywords and phrases through the R documentation.  Very powerful but you need to learn how to use it in order to get the results you want otherwise you can end up with thousand documents not related with what you were looking for.
 
 Type for example:
 
@@ -78,6 +78,7 @@ RSiteSearch("{remove objects}", restrict = "function")
 ## The results page should open in your browser shortly
 ```
 
+Now our search returned 79 documents, and the second one listed is the one we were looking for.
 
 Let's back to our local search, and see what the **help.search()** function can do.
 
@@ -227,10 +228,10 @@ install_github("Rdocumentation", "Data-Camp")
 ```
 ## Installing github repo Rdocumentation/master from Data-Camp
 ## Downloading master.zip from https://github.com/Data-Camp/Rdocumentation/archive/master.zip
-## Installing package from C:\Users\Diego\AppData\Local\Temp\RtmpWWhRHb/master.zip
+## Installing package from C:\Users\Diego\AppData\Local\Temp\Rtmpi8nfX6/master.zip
 ## Installing Rdocumentation
 ## "C:/PROGRA~1/R/R-31~1.0/bin/x64/R" --vanilla CMD INSTALL  \
-##   "C:\Users\Diego\AppData\Local\Temp\RtmpWWhRHb\devtools12c4321e74ab\Rdocumentation-master"  \
+##   "C:\Users\Diego\AppData\Local\Temp\Rtmpi8nfX6\devtools1d6c781a29b8\Rdocumentation-master"  \
 ##   --library="C:/Users/Diego/Documents/R/win-library/3.1" --install-tests
 ```
 

@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>Test - read.csv(). Faster and more efficient with nrows?</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: rgb(88, 72, 246)
+   }
+
+   pre .number {
+     color: rgb(0, 0, 205);
+   }
+
+   pre .comment {
+     color: rgb(76, 136, 107);
+   }
+
+   pre .keyword {
+     color: rgb(0, 0, 255);
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: rgb(3, 106, 7);
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+
+</head>
+
+<body>
+<h1>Test - read.csv(). Faster and more efficient with nrows?</h1>
+
+<p>As everybody knows when dealing with large files is important to know the actual number of lines or rows in a data set for preallocating purposes so memory handle in R can be improved.  </p>
+
+<p>But as usually happens whith those things everybody knows, they are not always true.  </p>
+
+<p>Here I show the results of my own tests which doesn&#39;t seem to support that claim.</p>
+
+<p>Counting the number of lines in a file can be handled from outside R by using the <strong>shell()</strong> function of the <strong>base</strong> package or by using R functions directly.   </p>
+
+<p>Usual file formats do not represent a problem for using the <strong>shell</strong> technique; however many times we need to deal with messy files and/or with compressed files for which the count of lines can be innacurate.</p>
+
+<p>In any case let&#39;s see how different approaches perform with compressed and uncompressed files.</p>
+
+<p>First prepare our environment:</p>
+
+<pre><code class="r">rm(list = ls())
+gc()
+</code></pre>
+
+<pre><code>##          used (Mb) gc trigger (Mb) max used (Mb)
+## Ncells 241620 13.0     407500 21.8   350000 18.7
+## Vcells 447717  3.5     905753  7.0   859060  6.6
+</code></pre>
+
+<pre><code class="r">my.path &lt;- &quot;C:/Users/Diego/Documents/Reproducible Research/PA2&quot;
+setwd(my.path)
+fileZip &lt;- &quot;./StormData.csv.bz2&quot;
+fileUnz &lt;- &quot;./StormData.csv&quot;
+</code></pre>
+
+<h3>Extract the zipped file</h3>
+
+<pre><code class="r">library(R.utils)
+</code></pre>
+
+<pre><code>## Loading required package: R.oo
+## Loading required package: R.methodsS3
+## R.methodsS3 v1.6.1 (2014-01-04) successfully loaded. See ?R.methodsS3 for help.
+## R.oo v1.18.0 (2014-02-22) successfully loaded. See ?R.oo for help.
+## 
+## Attaching package: &#39;R.oo&#39;
+## 
+## The following objects are masked from &#39;package:methods&#39;:
+## 
+##     getClasses, getMethods
+## 
+## The following objects are masked from &#39;package:base&#39;:
+## 
+##     attach, detach, gc, load, save
+## 
+## R.utils v1.29.8 (2014-01-27) successfully loaded. See ?R.utils for help.
+## 
+## Attaching package: &#39;R.utils&#39;
+## 
+## The following object is masked from &#39;package:utils&#39;:
+## 
+##     timestamp
+## 
+## The following objects are masked from &#39;package:base&#39;:
+## 
+##     cat, commandArgs, getOption, inherits, isOpen, parse, warnings
+</code></pre>
+
+<pre><code class="r">if (file.exists(fileUnz) == F) {
+    system.time(bunzip2(fileZip))
+}
+</code></pre>
+
+<h2>Using R functions</h2>
+
+<h4>Zipped countLines using a connection</h4>
+
+<pre><code class="r">con &lt;- file(fileZip, &quot;rb&quot;)
+system.time(nrec01 &lt;- countLines(con))
+</code></pre>
+
+<pre><code>##    user  system elapsed 
+##    5.80    1.45    7.46
+</code></pre>
+
+<pre><code class="r">close(con)
+nrec01
+</code></pre>
+
+<pre><code>## [1] 400312
+</code></pre>
+
+<h4>Zipped countLines using directly the file</h4>
+
+<pre><code class="r">system.time(nrec01 &lt;- countLines(fileZip))
+</code></pre>
+
+<pre><code>##    user  system elapsed 
+##    5.87    1.03    7.03
+</code></pre>
+
+<pre><code class="r">nrec01
+</code></pre>
+
+<pre><code>## [1] 400312
+</code></pre>
+
+<h4>Unzipped countLines</h4>
+
+<pre><code class="r">system.time(nrec02 &lt;- countLines(fileUnz))
+</code></pre>
+
+<pre><code>##    user  system elapsed 
+##   65.50   11.25   87.61
+</code></pre>
+
+<pre><code class="r">nrec02
+</code></pre>
+
+<pre><code>## [1] 1415169
+</code></pre>
+
+<h3>Zipped scan</h3>
+
+<pre><code class="r">system.time(nrec03 &lt;- length(scan(file = fileZip, what = list(&quot;&quot;), n = -1, sep = &quot;\n&quot;)[[1]]))
+</code></pre>
+
+<pre><code>##    user  system elapsed 
+##  322.16    1.59  331.05
+</code></pre>
+
+<pre><code class="r">nrec03
+</code></pre>
+
+<pre><code>## [1] 1267891
+</code></pre>
+
+<h3>Unzipped scan</h3>
+
+<pre><code class="r">system.time(nrec04 &lt;- length(scan(file = fileUnz, what = list(&quot;&quot;), n = -1, sep = &quot;\n&quot;)[[1]]))
+</code></pre>
+
+<pre><code>##    user  system elapsed 
+##  132.17    1.17  135.56
+</code></pre>
+
+<pre><code class="r">nrec04
+</code></pre>
+
+<pre><code>## [1] 1267891
+</code></pre>
+
+<h3>fread</h3>
+
+<pre><code class="r">library(data.table)
+a &lt;- fread(fileUnz)
+</code></pre>
+
+<pre><code>## Error: Expected sep (&#39;,&#39;) but &#39;
+&#39; ends field 36 on line 4 when detecting
+## types: 20.00,8/25/2006 0:00:00,&quot;07:05:00
+## PM&quot;,&quot;CST&quot;,143.00,&quot;OTTAWA&quot;,&quot;KS&quot;,&quot;HAIL&quot;,1.00,&quot;S&quot;,&quot;MINNEAPOLIS&quot;,8/25/2006
+## 0:00:00,&quot;07:05:00
+## PM&quot;,0.00,,1.00,&quot;S&quot;,&quot;MINNEAPOLIS&quot;,0.00,0.00,,88.00,0.00,0.00,0.00,,0.00,,&quot;TOP&quot;,&quot;KANSAS,
+## East&quot;,,3907.00,9743.00,3907.00,9743.00,&quot;Dime to nickel sized hail.
+
+</code></pre>
+
+<pre><code>## Warning: object &#39;a&#39; not found
+</code></pre>
+
+<h3>Zipped hsTableReader</h3>
+
+<pre><code class="r">nrec05 &lt;- 0
+nlines &lt;- function(d) {
+    nrec05 &lt;&lt;- nrec05 + nrow(d)
+}
+library(HadoopStreaming)
+</code></pre>
+
+<pre><code>## Loading required package: getopt
+</code></pre>
+
+<pre><code class="r">con &lt;- bzfile(fileZip, &quot;rb&quot;)
+system.time(d &lt;- hsTableReader(con, FUN = nlines))
+</code></pre>
+
+<pre><code>## Error: subscript out of bounds
+</code></pre>
+
+<pre><code>## Timing stopped at: 316.9 1.17 324.2
+</code></pre>
+
+<pre><code class="r">close(con)
+nrec05
+</code></pre>
+
+<pre><code>## [1] 902298
+</code></pre>
+
+<h3>Unzipped hsTableReader</h3>
+
+<pre><code class="r">nrec06 &lt;- 0
+nlines &lt;- function(d) {
+    nrec06 &lt;&lt;- nrec06 + nrow(d)
+}
+con &lt;- file(fileUnz, open = &quot;r&quot;)
+system.time(d &lt;- hsTableReader(con, FUN = nlines))
+</code></pre>
+
+<pre><code>## Error: subscript out of bounds
+</code></pre>
+
+<pre><code>## Timing stopped at: 131 1.25 136
+</code></pre>
+
+<pre><code class="r">close(con)
+nrec06
+</code></pre>
+
+<pre><code>## [1] 902298
+</code></pre>
+
+<h3>Zipped hsLineReader</h3>
+
+<pre><code class="r">nrec07 &lt;- 0
+nlines &lt;- function(d) {
+    nrec07 &lt;&lt;- nrec07 + length(d)
+}
+con &lt;- bzfile(fileZip, &quot;rb&quot;)
+system.time(d &lt;- hsLineReader(con, FUN = nlines))
+</code></pre>
+
+<pre><code>##    user  system elapsed 
+##  292.47    1.23  302.77
+</code></pre>
+
+<pre><code class="r">close(con)
+nrec07
+</code></pre>
+
+<pre><code>## [1] 1422162
+</code></pre>
+
+<h3>Unzipped hsLineReader</h3>
+
+<pre><code class="r">nrec08 &lt;- 0
+nlines &lt;- function(d) {
+    nrec08 &lt;&lt;- nrec08 + length(d)
+}
+library(HadoopStreaming)
+con &lt;- file(fileUnz, open = &quot;r&quot;)
+system.time(d &lt;- hsLineReader(con, FUN = nlines))
+</code></pre>
+
+<pre><code>##    user  system elapsed 
+##  110.62    1.53  116.10
+</code></pre>
+
+<pre><code class="r">close(con)
+nrec08
+</code></pre>
+
+<pre><code>## [1] 1408176
+</code></pre>
+
+<h2>Using the Shell (Windows)</h2>
+
+<h3>Unzipped find /c</h3>
+
+<pre><code class="r">system.time(nrec09 &lt;- as.numeric(shell(&quot;type \&quot;StormData.csv\&quot; | find /c \&quot;,\&quot;&quot;, 
+    intern = T)))
+</code></pre>
+
+<pre><code>##    user  system elapsed 
+##    0.00    0.03   59.23
+</code></pre>
+
+<pre><code class="r">nrec09
+</code></pre>
+
+<pre><code>## [1] 1060906
+</code></pre>
+
+<h3>Unzipped find /v /c</h3>
+
+<pre><code class="r">system.time(nrec10 &lt;- as.numeric(shell(&quot;type \&quot;StormData.csv\&quot; | find /v /c \&quot;\&quot;&quot;, 
+    intern = T)))
+</code></pre>
+
+<pre><code>##    user  system elapsed 
+##    0.01    0.00   55.29
+</code></pre>
+
+<pre><code class="r">nrec10
+</code></pre>
+
+<pre><code>## [1] 1232705
+</code></pre>
+
+<h3>Zipped find /c</h3>
+
+<pre><code class="r">system.time(nrec11 &lt;- as.numeric(shell(&quot;type \&quot;StormData.csv.bz2\&quot; | find /c \&quot;,\&quot;&quot;, 
+    intern = T)))
+</code></pre>
+
+<pre><code>##    user  system elapsed 
+##    0.00    0.00   10.51
+</code></pre>
+
+<pre><code class="r">nrec11
+</code></pre>
+
+<pre><code>## [1] 126715
+</code></pre>
+
+<h3>Zipped find /v /c</h3>
+
+<pre><code class="r">system.time(nrec12 &lt;- as.numeric(shell(&quot;type \&quot;StormData.csv.bz2\&quot; | find /v /c \&quot;\&quot;&quot;, 
+    intern = T)))
+</code></pre>
+
+<pre><code>##    user  system elapsed 
+##    0.00    0.01    4.96
+</code></pre>
+
+<pre><code class="r">nrec12
+</code></pre>
+
+<pre><code>## [1] 533062
+</code></pre>
+
+<p>First we notice is the variety of results returned by each approach.   </p>
+
+<p>Importantly only the <strong>hsTableReader()</strong> approach returned the correct results for this messy data set, even when an <em>out of bounds</em> error jumps.   </p>
+
+<p>Among other things this is due to the use of a .csv file for storing complex things.</p>
+
+<p>Interestingly, is faster to attack directly the file than using a connection.   </p>
+
+<p>Noticeably, is faster to use zipped files than unzipped files with some methods but not with others.</p>
+
+<p>Finally, is evident that the <strong>shell</strong> approach is way more efficient than any of the tested internal R functions.</p>
+
+<p>Unfortunately, fred crashes with this complex csv file.</p>
+
+<p>Among all, the fastest approach was <strong>Zipped find /v /c</strong>, but the results are not right.</p>
+
+<p>However, that result is very close to the half of the <strong>Unzipped find /c</strong> approach which is the one reported by Phil Spector in his book <em>&ldquo;Data Manipulation with R&rdquo;</em> which is my gold standard to call it some way.</p>
+
+<p>I&#39;m not sure if the naive multiplication by 2 can be generalizable to all cases, but since it is very fast one can test it whenever needed.</p>
+
+<h2>Comparison</h2>
+
+<h3>Get the classes</h3>
+
+<pre><code class="r">storm.data &lt;- read.csv(fileZip, stringsAsFactors = F, nrows = 10)
+classes &lt;- sapply(storm.data, class)
+</code></pre>
+
+<p><strong>read.csv()</strong> loves conversions, and in this case getting the classes of the first rows doesn&#39;t help for passing the actual classes the colClasses argument as you can see below.</p>
+
+<pre><code class="r">Sys.time()
+</code></pre>
+
+<pre><code>## [1] &quot;2014-05-30 04:24:05 COT&quot;
+</code></pre>
+
+<pre><code class="r">system.time(storm.data &lt;- read.csv(fileZip, header = TRUE, stringsAsFactors = F, 
+    comment.char = &quot;&quot;, colClasses = classes))
+</code></pre>
+
+<pre><code>## Error: scan() expected &#39;an integer&#39;, got &#39;&quot;0130&quot;&#39;
+</code></pre>
+
+<pre><code>## Timing stopped at: 0 0.02 0.02
+</code></pre>
+
+<pre><code class="r">Sys.time()
+</code></pre>
+
+<pre><code>## [1] &quot;2014-05-30 04:24:05 COT&quot;
+</code></pre>
+
+<h3>Without nrows</h3>
+
+<pre><code class="r">Sys.time()
+</code></pre>
+
+<pre><code>## [1] &quot;2014-05-30 04:24:05 COT&quot;
+</code></pre>
+
+<pre><code class="r">system.time(storm.data &lt;- read.csv(fileZip, header = TRUE, stringsAsFactors = F, 
+    comment.char = &quot;&quot;, colClasses = &quot;character&quot;))
+</code></pre>
+
+<pre><code>##    user  system elapsed 
+##  368.76    1.82  382.04
+</code></pre>
+
+<pre><code class="r">Sys.time()
+</code></pre>
+
+<pre><code>## [1] &quot;2014-05-30 04:30:27 COT&quot;
+</code></pre>
+
+<h3>With nrows</h3>
+
+<pre><code class="r">Sys.time()
+</code></pre>
+
+<pre><code>## [1] &quot;2014-05-30 04:30:28 COT&quot;
+</code></pre>
+
+<pre><code class="r">system.time(nrec12 &lt;- as.numeric(shell(&quot;type \&quot;StormData.csv.bz2\&quot; | find /v /c \&quot;\&quot;&quot;, 
+    intern = T)))
+</code></pre>
+
+<pre><code>##    user  system elapsed 
+##    0.00    0.00    9.54
+</code></pre>
+
+<pre><code class="r">nrec12 &lt;- nrec12 * 2
+system.time(storm.data &lt;- read.csv(fileZip, stringsAsFactors = F, comment.char = &quot;&quot;, 
+    colClasses = &quot;character&quot;, nrows = nrec12))
+</code></pre>
+
+<pre><code>##    user  system elapsed 
+##  348.62    1.41  356.00
+</code></pre>
+
+<pre><code class="r">Sys.time()
+</code></pre>
+
+<pre><code>## [1] &quot;2014-05-30 04:36:34 COT&quot;
+</code></pre>
+
+<p>While there&#39;s a little improvement in time is not that dramatic as I expected considering what others have reported.  </p>
+
+<p>I mean, 12 seconds are valuable, but I spent ~2 days doing the tests.</p>
+
+<p>I created an external application for tracking the memory usage by R during this process, and here are the results:</p>
+
+<pre><code class="r">file1 &lt;- &quot;./Table1.txt&quot;
+file2 &lt;- &quot;./Table3.txt&quot;
+
+x &lt;- read.csv(file1, stringsAsFactors = F, comment.char = &quot;&quot;, colClasses = c(&quot;integer&quot;, 
+    &quot;character&quot;, &quot;integer&quot;))
+y &lt;- read.csv(file2, stringsAsFactors = F, comment.char = &quot;&quot;, colClasses = c(&quot;integer&quot;, 
+    &quot;character&quot;, &quot;integer&quot;))
+
+x$RAM &lt;- as.integer(round(x$RAM * 0.000976562), 0)
+y$RAM &lt;- as.integer(round(y$RAM * 0.000976562), 0)
+
+plot(x$ID, x$RAM, type = &quot;l&quot;, col = &quot;blue&quot;, xlab = &quot;Time (seconds)&quot;, ylab = &quot;RAM Consumption (Megabytes)&quot;)
+lines(y$RAM, type = &quot;l&quot;, col = &quot;red&quot;)
+legend(&quot;topleft&quot;, legend = c(&quot;Without nrows&quot;, &quot;With nrows&quot;), col = c(&quot;blue&quot;, 
+    &quot;red&quot;), lty = 1, lwd = 1.5)
+</code></pre>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAH4CAMAAACR9g9NAAAApVBMVEX9/v0AAAAAADkAAGUAAP8AOTkAOWUAOY8AZrU5AAA5ADk5AGU5OWU5OY85ZrU5j485j9plAABlADllAGVlOQBlOTllOY9lZgBlZmVlZrVlj49ltf2POQCPOTmPOWWPZgCPjzmPj2WPtY+P29qP2/21ZgC1Zjm1ZmW124+1/rW1/v3ajzna24/a/rXa/tra/v39tWX924/929r9/rX9/tr9/v3/AAAeNx6WAAAAN3RSTlP//////////////////////////////////////////////////////////////////////wD/rn+PdAAAAAlwSFlzAAALEgAACxIB0t1+/AAAEztJREFUeJztnQtj4sYVRoOX1jgbb/E6TR948yqkWZPWUBD//6dVM5KwQHfQXGmeut9J1t61NTPYh3m/vimASL6J/QJAHCBeKBAvFIgXCsQLBeKFAvFCgXihQLxQIF4oEC8UiBcKxAsF4oUC8UKBeKFAvFAgXigQLxSIFwrECwXihQLxQoF4oUC8UCBeKBAvFIgXCsQLBeKFAvFCgXihQLxQIF4oEC8UiBcKxAsF4oUC8UKBeKFAvFAgXigQLxSIFwrECwXihQLxQoF4oUC8UCBeKBAvFIgXCsQLBeKFAvFCgXihQLxQIF4oY8TPQBxO5X/9eBQ/IuxYYqYdnVP5Xy8QPz0gXigQLxSIFwrECwXihQLxQgkjfv+ghwM+vHKj9grE9zFW/PFlpT/v7t+YUXsF4vsYK/7w/Hrx2T7qNpvy3bObqQ+L/cfX6v/uU+QXaSC+jzRy/HZZ/vn7svpLAfHjCFPHH54c1PH7x7fjl1/Vh/X+49en2YffP/5tpkqAMvYyZmW8+vqrevYn9a39d99/eNXfVu+9/bdr9d7bNS8E4s/M6YeCtOrnNO+PlhXF4Yf//vhafq6L+oelLkQ2+lMlvi4G6m/tH8r3RfXtspjYlm+F7VLVN9uFxY81bdIR34vK6Z/Kmr788F7Hl3+UycPn9aX493803358++2XRRlH+Xd+2tMjjHg33bntarsqdssy716IV5908U+Lr799eP76/PvHr+W7oHwxd2tu2pMjiHhH3bnd4rd1sf+kPvBzfLH556fjl18WrRcC8Wc8iSe6c5ZrPC6j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" alt="plot of chunk RAMconsumption"/> </p>
+
+<p>Evidently, passing a number to the <strong>nrows</strong> argument allows <strong>read.csv()</strong> to preallocate the data frame for receiving the csv file.  </p>
+
+<p>However, the RAM consumptions is even superior by preallocating!  </p>
+
+<p>I&#39;ll need to do further tests with other data sets in oder to get a final conclusion, but at least in this case passing an argument to nrows doesn&#39;t seem to improve significatively the efficiency of the <strong>read.csv()</strong> function.</p>
+
+<hr/>
+
+<p>Note: For the test I had to close and re-start R, since as you can notice, even after calling the garbage collector the memory is not totally recovered.  </p>
+
+<hr/>
+
+</body>
+
+</html>
+
